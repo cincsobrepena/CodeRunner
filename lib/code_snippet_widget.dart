@@ -240,8 +240,8 @@ class _CodeSnippetWidgetState extends State<CodeSnippetWidget> {
 
   void _proceedToNextSnippet() {
     setState(() {
-      showCheckButton = true;
       if (currentSnippetIndex + 1 < widget.snippets.length) {
+        showCheckButton = true;
         currentSnippetIndex++;
         _initializeCurrentSnippet();
         progress = 1.0;
@@ -249,6 +249,7 @@ class _CodeSnippetWidgetState extends State<CodeSnippetWidget> {
       } else {
         widget.onLevelCompleted();
         showDialog(
+          barrierDismissible: false,
           context: context,
           builder: (context) => AlertDialog(
             title: Text('Congratulations!'),
@@ -269,6 +270,7 @@ class _CodeSnippetWidgetState extends State<CodeSnippetWidget> {
 
   void _showGameOverDialog() {
     showDialog(
+      barrierDismissible: false,
       context: context,
       builder: (context) => AlertDialog(
         title: Text('Game Over'),

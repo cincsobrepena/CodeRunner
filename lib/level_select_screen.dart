@@ -43,7 +43,6 @@ class _LevelSelectScreenState extends State<LevelSelectScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Use Provider to get completedLevels
     Map<String, Set<int>> completedLevels =
         Provider.of<CompletedLevelsModel>(context).completedLevels;
 
