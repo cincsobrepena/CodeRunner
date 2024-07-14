@@ -1,8 +1,8 @@
-class CodeSnippet {
-  final String description;
-  final List<CodeLine> codeSnippet;
+class CodeSegment {
+  final String text;
+  final bool editable;
 
-  CodeSnippet(this.description, this.codeSnippet);
+  CodeSegment(this.text, {this.editable = false});
 }
 
 class CodeLine {
@@ -15,11 +15,11 @@ class CodeLine {
   }
 }
 
-class CodeSegment {
-  final String text;
-  final bool editable;
+class CodeSnippet {
+  final String description;
+  final List<CodeLine> codeSnippet;
 
-  CodeSegment(this.text, {this.editable = false});
+  CodeSnippet(this.description, this.codeSnippet);
 }
 
 List<CodeSnippet> flutterEasySnippets = [
@@ -65,21 +65,21 @@ List<CodeSnippet> flutterEasySnippets = [
   ),
   //3
   CodeSnippet(
-    'Display a Star Icon:',
+    'Fill in the blanks to complete the code for displaying a Star Icon:',
     [
       CodeLine([
         CodeSegment('Icon', editable: false),
-        CodeSegment('('),
-        CodeSegment('Icons', editable: false),
-        CodeSegment('.star'),
-        CodeSegment(')'),
+        CodeSegment('(', editable: true),
+        CodeSegment('Icons', editable: true),
+        CodeSegment('.star', editable: true),
+        CodeSegment(')', editable: true),
       ]),
     ],
   ),
 
   //4
   CodeSnippet(
-    'Create a padded text inside a container:',
+    'Fill in the blanks to complete the code for adding padded text inside a container:',
     [
       CodeLine([
         CodeSegment('Container', editable: false),
@@ -116,7 +116,7 @@ List<CodeSnippet> flutterEasySnippets = [
   ),
   //5
   CodeSnippet(
-    'Create a text field with a label:',
+    'Fill in the blanks to complete the code for a text field with decoration and a label:',
     [
       CodeLine([
         CodeSegment('TextField', editable: false),
@@ -155,7 +155,7 @@ List<CodeSnippet> flutterEasySnippets = [
 List<CodeSnippet> flutterMediumSnippets = [
   //1
   CodeSnippet(
-    'Create a ListView with ListTile children:',
+    'Fill in the blanks to complete the code for a ListView with ListTile children:',
     [
       CodeLine([
         CodeSegment('ListView', editable: false),
@@ -225,7 +225,7 @@ List<CodeSnippet> flutterMediumSnippets = [
   //2
 
   CodeSnippet(
-    'Create a Checkbox with an onChanged action:',
+    'Fill in the blanks to complete the code for a Checkbox with an onChanged action:',
     [
       CodeLine([
         CodeSegment('Checkbox', editable: false),
@@ -266,7 +266,7 @@ List<CodeSnippet> flutterMediumSnippets = [
   ),
   //3
   CodeSnippet(
-    'Create a TextField with decoration:',
+    'Fill in the blanks to complete the code for a TextField with decoration and a label:',
     [
       CodeLine([
         CodeSegment('TextField', editable: false),
@@ -300,7 +300,7 @@ List<CodeSnippet> flutterMediumSnippets = [
   ),
   //4
   CodeSnippet(
-    'Create a ListTile with leading Icon, title, and subtitle:',
+    'Fill in the blanks to complete the code for a ListTile with leading Icon, title, and subtitle:',
     [
       CodeLine([
         CodeSegment('ListTile', editable: false),
@@ -351,7 +351,7 @@ List<CodeSnippet> flutterMediumSnippets = [
 
 //5
   CodeSnippet(
-    'Create a TextButton with an action:',
+    'Fill in the blanks to complete the code for a TextButton with an action:',
     [
       CodeLine([
         CodeSegment('TextButton', editable: false),
@@ -450,7 +450,7 @@ List<CodeSnippet> flutterHardSnippets = [
   ),
   //2
   CodeSnippet(
-    'Display an Icon with color and size:',
+    'Fill in the blanks to complete the code for diplaying an Icon with color and size:',
     [
       CodeLine([
         CodeSegment('Icon', editable: false),
@@ -485,7 +485,7 @@ List<CodeSnippet> flutterHardSnippets = [
   ),
   //3
   CodeSnippet(
-    'Display styled text:',
+    'Fill in the blanks to complete the code for displaying styled text with font size, font weight, and font color:',
     [
       CodeLine([
         CodeSegment('Text', editable: false),
@@ -542,7 +542,7 @@ List<CodeSnippet> flutterHardSnippets = [
   ),
   //4
   CodeSnippet(
-    'Display a network image with size and fit properties:',
+    'Fill in the blanks to complete the code for displaying a network image with size and fit properties:',
     [
       CodeLine([
         CodeSegment('Image', editable: false),
@@ -587,7 +587,7 @@ List<CodeSnippet> flutterHardSnippets = [
   ),
   //5
   CodeSnippet(
-    'Display a CircularProgressIndicator with properties:',
+    'Fill in the blanks to complete the code for displaying a CircularProgressIndicator with storke width and value color properties:',
     [
       CodeLine([
         CodeSegment('CircularProgressIndicator', editable: false),
@@ -622,7 +622,7 @@ List<CodeSnippet> flutterHardSnippets = [
 
 List<CodeSnippet> swiftEasySnippets = [
   CodeSnippet(
-    'Print "Hello, World!" to the console:',
+    'Fill in the blanks to complete the code for printing "Hello, World!" to the console:',
     [
       CodeLine([
         CodeSegment('print', editable: false),
@@ -635,7 +635,7 @@ List<CodeSnippet> swiftEasySnippets = [
     ],
   ),
   CodeSnippet(
-    'Declare a constant with value 10:',
+    'Fill in the blanks to complete the code for declaring a constant with value 10:',
     [
       CodeLine([
         CodeSegment('let', editable: true),
@@ -649,7 +649,7 @@ List<CodeSnippet> swiftEasySnippets = [
     ],
   ),
   CodeSnippet(
-    'Create a variable with value "Swift":',
+    'Fill in the blanks to complete the code for creating a variable with value "Swift":',
     [
       CodeLine([
         CodeSegment('var', editable: true),
@@ -664,7 +664,7 @@ List<CodeSnippet> swiftEasySnippets = [
     ],
   ),
   CodeSnippet(
-    'Declare a function that takes two integers and returns their sum:',
+    'Fill in the blanks to complete the code for declaring a function that takes two integers and returns their sum:',
     [
       CodeLine([
         CodeSegment('func', editable: true),
@@ -706,7 +706,7 @@ List<CodeSnippet> swiftEasySnippets = [
     ],
   ),
   CodeSnippet(
-    'Create an empty array of integers:',
+    'Fill in the blanks to complete the code for creating an empty array of integers:',
     [
       CodeLine([
         CodeSegment('var', editable: true),
@@ -726,7 +726,7 @@ List<CodeSnippet> swiftEasySnippets = [
 
 List<CodeSnippet> swiftMediumSnippets = [
   CodeSnippet(
-    'Create a class named Person with properties name and age:',
+    'Fill in the blanks to complete the code for creating a class named Person with properties name and age:',
     [
       CodeLine([
         CodeSegment('class', editable: true),
@@ -759,7 +759,7 @@ List<CodeSnippet> swiftMediumSnippets = [
     ],
   ),
   CodeSnippet(
-    'Declare a function that returns true if a number is even, false otherwise:',
+    'Fill in the blanks to complete the code for declare a function that returns true if a number is even, false otherwise:',
     [
       CodeLine([
         CodeSegment('func', editable: true),
@@ -799,7 +799,7 @@ List<CodeSnippet> swiftMediumSnippets = [
     ],
   ),
   CodeSnippet(
-    'Create an extension for Int that adds a squared computed property:',
+    'Fill in the blanks to complete the code for creating an extension for Int that adds a squared computed property:',
     [
       CodeLine([
         CodeSegment('extension', editable: true),
@@ -837,7 +837,7 @@ List<CodeSnippet> swiftMediumSnippets = [
     ],
   ),
   CodeSnippet(
-    'Declare a protocol named Printable with a method printDetails:',
+    'Fill in the blanks to complete the code for declaring a protocol named Printable with a method printDetails:',
     [
       CodeLine([
         CodeSegment('protocol', editable: true),
@@ -860,7 +860,7 @@ List<CodeSnippet> swiftMediumSnippets = [
     ],
   ),
   CodeSnippet(
-    'Create a dictionary with keys "name" and "age", and values "John" and 30:',
+    'Fill in the blanks to complete the code for creating a dictionary with keys "name" and "age", and values "John" and 30:',
     [
       CodeLine([
         CodeSegment('var', editable: true),
@@ -897,7 +897,7 @@ List<CodeSnippet> swiftMediumSnippets = [
 
 List<CodeSnippet> swiftHardSnippets = [
   CodeSnippet(
-    'Define an enumeration with three cases:',
+    'Fill in the blanks to complete the code for defining an enumeration with three cases:',
     [
       CodeLine([
         CodeSegment('enum', editable: true),
@@ -936,7 +936,7 @@ List<CodeSnippet> swiftHardSnippets = [
     ],
   ),
   CodeSnippet(
-    'Implement a simple protocol:',
+    'Fill in the blanks to complete the code for implementing a simple protocol:',
     [
       CodeLine([
         CodeSegment('protocol', editable: true),
@@ -995,7 +995,7 @@ List<CodeSnippet> swiftHardSnippets = [
     ],
   ),
   CodeSnippet(
-    'Write a function that returns a closure:',
+    'Fill in the blanks to complete the code for writing a function that returns a closure:',
     [
       CodeLine([
         CodeSegment('func', editable: true),
@@ -1063,7 +1063,7 @@ List<CodeSnippet> swiftHardSnippets = [
     ],
   ),
   CodeSnippet(
-    'Define a simple extension for the String class:',
+    'Fill in the blanks to complete the code for defining a simple extension for the String class:',
     [
       CodeLine([
         CodeSegment('extension', editable: true),
@@ -1104,7 +1104,7 @@ List<CodeSnippet> swiftHardSnippets = [
     ],
   ),
   CodeSnippet(
-    'Create a structure with a method:',
+    'Fill in the blanks to complete the code for creating a structure with a method:',
     [
       CodeLine([
         CodeSegment('struct', editable: true),

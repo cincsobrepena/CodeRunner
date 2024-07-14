@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'snippets.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'dart:async';
+import 'completed_levels_model.dart';
 
 class CodeSnippetWidget extends StatefulWidget {
   final List<CodeSnippet> snippets;
@@ -22,16 +24,25 @@ class _CodeSnippetWidgetState extends State<CodeSnippetWidget> {
   int currentSnippetIndex = 0;
   List<List<int>> editableIndices = [];
   List<List<TextEditingController>> controllers = [];
+  List<List<bool>> showCorrectAnswers = [];
   int lives = 3;
   double progress = 1.0;
   late Timer _timer;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool showCorrect = false;
   bool showIncorrect = false;
-
+  bool showCheckButton = true;
+  AudioPlayer _player1 = AudioPlayer();
+  AudioPlayer _player2 = AudioPlayer();
   @override
   void initState() {
     super.initState();
+    _player1 = AudioPlayer();
+    _player2 = AudioPlayer();
+
+    _player1.setSource(AssetSource('Correct.wav'));
+
+    _player2.setSource(AssetSource('Wrong.wav'));
     _initializeCurrentSnippet();
     _startTimer();
   }
@@ -41,6 +52,7 @@ class _CodeSnippetWidgetState extends State<CodeSnippetWidget> {
       CodeSnippet currentSnippet = widget.snippets[currentSnippetIndex];
       editableIndices.clear();
       controllers.clear();
+      showCorrectAnswers.clear();
       Random random = Random();
       List<int> allEditableIndices = [];
 
@@ -57,12 +69,15 @@ class _CodeSnippetWidgetState extends State<CodeSnippetWidget> {
         editableIndices.add(lineEditableIndices);
         controllers.add(List.generate(
             lineEditableIndices.length, (index) => TextEditingController()));
+        showCorrectAnswers
+            .add(List.generate(lineEditableIndices.length, (index) => false));
         allEditableIndices
             .addAll(lineEditableIndices.map((index) => i * 1000 + index));
       }
 
       allEditableIndices.shuffle(random);
-      int numTextInputs = min(3, allEditableIndices.length);
+      int numTextInputs =
+          _getNumEditableSegments(); // Get number of editable segments based on difficulty
       allEditableIndices = allEditableIndices.sublist(0, numTextInputs);
 
       editableIndices = List.generate(
@@ -78,13 +93,44 @@ class _CodeSnippetWidgetState extends State<CodeSnippetWidget> {
     }
   }
 
+  int _getNumEditableSegments() {
+    switch (widget.title.toLowerCase()) {
+      case 'easy level':
+        return 2;
+      case 'medium level':
+        return 3;
+      case 'hard level':
+        return 4;
+      default:
+        return 2;
+    }
+  }
+
   void _startTimer() {
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    int timerDurationMillis = 1000;
+
+    switch (widget.title.toLowerCase()) {
+      case 'easy level':
+        timerDurationMillis = 500;
+        break;
+      case 'medium level':
+        timerDurationMillis = 400;
+        break;
+      case 'hard level':
+        timerDurationMillis = 300;
+        break;
+      default:
+        timerDurationMillis = 500;
+        break;
+    }
+
+    _timer =
+        Timer.periodic(Duration(milliseconds: timerDurationMillis), (timer) {
       setState(() {
         progress -= 0.01;
         if (progress <= 0) {
           timer.cancel();
-          _loseLife();
+          _checkAnswers();
         }
       });
     });
@@ -129,19 +175,77 @@ class _CodeSnippetWidgetState extends State<CodeSnippetWidget> {
     }
 
     if (isCorrect) {
-      if (currentSnippetIndex + 1 < widget.snippets.length) {
-        setState(() {
-          currentSnippetIndex++;
-          _initializeCurrentSnippet();
-          progress = 1.0;
-          _startTimer();
-        });
-        showCorrect = true;
-        Timer(Duration(seconds: 1), () {
+      _showCorrectFeedbackAndProceed();
+    } else {
+      _showIncorrectFeedbackAndProceed();
+    }
+  }
+
+  void _showCorrectFeedbackAndProceed() {
+    setState(() {
+      showCorrect = true;
+      showCheckButton = false;
+    });
+    _player1.resume();
+
+    _timer.cancel();
+    _showAnswers();
+    Timer(Duration(seconds: 2), () {
+      setState(() {
+        showCorrect = false;
+      });
+      _proceedToNextSnippet();
+    });
+  }
+
+  void _showIncorrectFeedbackAndProceed() {
+    setState(() {
+      lives--;
+      showIncorrect = true;
+      showCheckButton = false;
+      if (lives <= 0) {
+        Timer(Duration(seconds: 2), () {
           setState(() {
-            showCorrect = false;
+            _showGameOverDialog();
           });
         });
+      }
+    });
+    _player2.resume();
+
+    _showAnswers();
+    Timer(Duration(seconds: 2), () {
+      setState(() {
+        showIncorrect = false;
+      });
+      if (lives > 0) {
+        _proceedToNextSnippet();
+      }
+    });
+  }
+
+  void _showAnswers() {
+    _timer.cancel();
+    setState(() {
+      for (int i = 0; i < editableIndices.length; i++) {
+        for (int j = 0; j < editableIndices[i].length; j++) {
+          int segmentIndex = editableIndices[i][j];
+          controllers[i][j].text = widget.snippets[currentSnippetIndex]
+              .codeSnippet[i].segments[segmentIndex].text;
+          showCorrectAnswers[i][j] = true;
+        }
+      }
+    });
+  }
+
+  void _proceedToNextSnippet() {
+    setState(() {
+      showCheckButton = true;
+      if (currentSnippetIndex + 1 < widget.snippets.length) {
+        currentSnippetIndex++;
+        _initializeCurrentSnippet();
+        progress = 1.0;
+        _startTimer();
       } else {
         widget.onLevelCompleted();
         showDialog(
@@ -160,44 +264,7 @@ class _CodeSnippetWidgetState extends State<CodeSnippetWidget> {
           ),
         );
       }
-    } else {
-      setState(() {
-        lives--;
-        if (lives > 0) {
-          if (currentSnippetIndex + 1 < widget.snippets.length) {
-            currentSnippetIndex++;
-            _initializeCurrentSnippet();
-            progress = 1.0;
-            _startTimer();
-          } else {
-            widget.onLevelCompleted();
-            showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                title: Text('Congratulations!'),
-                content: Text('You have completed all snippets.'),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).popUntil((route) => route.isFirst);
-                    },
-                    child: Text('OK'),
-                  ),
-                ],
-              ),
-            );
-          }
-        } else {
-          _showGameOverDialog();
-        }
-      });
-      showIncorrect = true;
-      Timer(Duration(seconds: 1), () {
-        setState(() {
-          showIncorrect = false;
-        });
-      });
-    }
+    });
   }
 
   void _showGameOverDialog() {
@@ -229,6 +296,8 @@ class _CodeSnippetWidgetState extends State<CodeSnippetWidget> {
   @override
   void dispose() {
     _timer.cancel();
+    _player1.dispose();
+    _player2.dispose();
     super.dispose();
   }
 
@@ -286,31 +355,44 @@ class _CodeSnippetWidgetState extends State<CodeSnippetWidget> {
                                       int editableIndex =
                                           editableIndices[lineIndex]
                                               .indexOf(segmentIndex);
-                                      return SizedBox(
-                                        width: _getWidthForText(segment.text),
-                                        height: 30,
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 4.0),
-                                          child: TextField(
-                                            controller: controllers[lineIndex]
-                                                [editableIndex],
-                                            maxLength: segment.text.length,
-                                            decoration: InputDecoration(
-                                              hintText: '',
-                                              border: OutlineInputBorder(),
-                                              contentPadding:
-                                                  EdgeInsets.symmetric(
-                                                      vertical: 8,
-                                                      horizontal: 8),
-                                              counterText: '',
-                                            ),
-                                            style: TextStyle(
-                                                fontFamily: 'Courier',
-                                                fontSize: 16),
+                                      if (showCorrectAnswers[lineIndex]
+                                          [editableIndex]) {
+                                        return Text(
+                                          segment.text,
+                                          style: TextStyle(
+                                            fontFamily: 'Courier',
+                                            fontSize: 16,
+                                            color: Colors.green,
                                           ),
-                                        ),
-                                      );
+                                        );
+                                      } else {
+                                        return SizedBox(
+                                          width: _getWidthForText(segment.text),
+                                          height: 30,
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 4.0),
+                                            child: TextField(
+                                              controller: controllers[lineIndex]
+                                                  [editableIndex],
+                                              maxLength: segment.text.length,
+                                              decoration: InputDecoration(
+                                                hintText: '',
+                                                border: OutlineInputBorder(),
+                                                contentPadding:
+                                                    EdgeInsets.symmetric(
+                                                        vertical: 8,
+                                                        horizontal: 8),
+                                                counterText: '',
+                                              ),
+                                              style: TextStyle(
+                                                fontFamily: 'Courier',
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      }
                                     } else {
                                       return Text(
                                         segment.text,
@@ -326,10 +408,11 @@ class _CodeSnippetWidgetState extends State<CodeSnippetWidget> {
                           ),
                         ),
                         SizedBox(height: 20),
-                        ElevatedButton(
-                          onPressed: _checkAnswers,
-                          child: Text('Check Answers'),
-                        ),
+                        if (showCheckButton)
+                          ElevatedButton(
+                            onPressed: _checkAnswers,
+                            child: Text('Check Answers'),
+                          ),
                       ],
                     ),
                   ),
