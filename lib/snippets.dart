@@ -34,7 +34,6 @@ List<CodeSnippet> flutterEasySnippets = [
         CodeSegment('Text Widget'),
         CodeSegment('\'', editable: true),
         CodeSegment(')', editable: true),
-        CodeSegment(';', editable: true),
       ]),
     ],
   ),
@@ -450,7 +449,7 @@ List<CodeSnippet> flutterHardSnippets = [
   ),
   //2
   CodeSnippet(
-    'Fill in the blanks to complete the code for diplaying an Icon with color and size:',
+    'Fill in the blanks to complete the code for displaying an Icon with color and size:',
     [
       CodeLine([
         CodeSegment('Icon', editable: false),
@@ -587,7 +586,7 @@ List<CodeSnippet> flutterHardSnippets = [
   ),
   //5
   CodeSnippet(
-    'Fill in the blanks to complete the code for displaying a CircularProgressIndicator with storke width and value color properties:',
+    'Fill in the blanks to complete the code for displaying a CircularProgressIndicator with stroke width and value color properties:',
     [
       CodeLine([
         CodeSegment('CircularProgressIndicator', editable: false),
@@ -654,7 +653,7 @@ List<CodeSnippet> swiftEasySnippets = [
       CodeLine([
         CodeSegment('var', editable: true),
         CodeSegment(' ', editable: false),
-        CodeSegment('variable', editable: true),
+        CodeSegment('variable'),
         CodeSegment(' ', editable: false),
         CodeSegment('=', editable: true),
         CodeSegment('\"', editable: true),
@@ -687,12 +686,11 @@ List<CodeSnippet> swiftEasySnippets = [
         CodeSegment('->', editable: true),
         CodeSegment(' ', editable: false),
         CodeSegment('Int', editable: true),
-      ]),
-      CodeLine([
+        CodeSegment(' '),
         CodeSegment('{', editable: true),
       ]),
       CodeLine([
-        CodeSegment(' ', editable: false),
+        CodeSegment('  '),
         CodeSegment('return', editable: true),
         CodeSegment(' ', editable: false),
         CodeSegment('a', editable: true),
@@ -736,7 +734,7 @@ List<CodeSnippet> swiftMediumSnippets = [
         CodeSegment('{', editable: true),
       ]),
       CodeLine([
-        CodeSegment(' ', editable: false),
+        CodeSegment('  '),
         CodeSegment('var', editable: true),
         CodeSegment(' ', editable: false),
         CodeSegment('name', editable: true),
@@ -745,7 +743,7 @@ List<CodeSnippet> swiftMediumSnippets = [
         CodeSegment('String', editable: true),
       ]),
       CodeLine([
-        CodeSegment(' ', editable: false),
+        CodeSegment('  '),
         CodeSegment('var', editable: true),
         CodeSegment(' ', editable: false),
         CodeSegment('age', editable: true),
@@ -776,12 +774,11 @@ List<CodeSnippet> swiftMediumSnippets = [
         CodeSegment('->', editable: true),
         CodeSegment(' ', editable: false),
         CodeSegment('Bool', editable: true),
-      ]),
-      CodeLine([
+        CodeSegment(' '),
         CodeSegment('{', editable: true),
       ]),
       CodeLine([
-        CodeSegment(' ', editable: false),
+        CodeSegment('  '),
         CodeSegment('return', editable: true),
         CodeSegment(' ', editable: false),
         CodeSegment('number', editable: true),
@@ -809,7 +806,7 @@ List<CodeSnippet> swiftMediumSnippets = [
         CodeSegment('{', editable: true),
       ]),
       CodeLine([
-        CodeSegment(' ', editable: false),
+        CodeSegment('  '),
         CodeSegment('var', editable: true),
         CodeSegment(' ', editable: false),
         CodeSegment('squared', editable: true),
@@ -820,7 +817,8 @@ List<CodeSnippet> swiftMediumSnippets = [
         CodeSegment('{', editable: true),
       ]),
       CodeLine([
-        CodeSegment(' ', editable: false),
+        CodeSegment('  '),
+        CodeSegment('  '),
         CodeSegment('return', editable: true),
         CodeSegment(' ', editable: false),
         CodeSegment('self', editable: true),
@@ -829,6 +827,7 @@ List<CodeSnippet> swiftMediumSnippets = [
         CodeSegment('self', editable: true),
       ]),
       CodeLine([
+        CodeSegment('  '),
         CodeSegment('}', editable: true),
       ]),
       CodeLine([
@@ -847,7 +846,7 @@ List<CodeSnippet> swiftMediumSnippets = [
         CodeSegment('{', editable: true),
       ]),
       CodeLine([
-        CodeSegment(' ', editable: false),
+        CodeSegment('  '),
         CodeSegment('func', editable: true),
         CodeSegment(' ', editable: false),
         CodeSegment('printDetails', editable: true),
@@ -873,6 +872,9 @@ List<CodeSnippet> swiftMediumSnippets = [
         CodeSegment('=', editable: true),
         CodeSegment(' ', editable: false),
         CodeSegment('['),
+      ]),
+      CodeLine([
+        CodeSegment('  '),
         CodeSegment('\"', editable: true),
         CodeSegment('name'),
         CodeSegment('\"', editable: true),
@@ -889,6 +891,8 @@ List<CodeSnippet> swiftMediumSnippets = [
         CodeSegment(':', editable: true),
         CodeSegment(' ', editable: false),
         CodeSegment('30'),
+      ]),
+      CodeLine([
         CodeSegment(']', editable: true),
       ]),
     ],
@@ -897,7 +901,7 @@ List<CodeSnippet> swiftMediumSnippets = [
 
 List<CodeSnippet> swiftHardSnippets = [
   CodeSnippet(
-    'Fill in the blanks to complete the code for defining an enumeration with three cases:',
+    'Fill in the blanks to complete the code for defining an enumeration named "Direction" with north, south, east, and west cases:',
     [
       CodeLine([
         CodeSegment('enum', editable: true),
@@ -936,7 +940,7 @@ List<CodeSnippet> swiftHardSnippets = [
     ],
   ),
   CodeSnippet(
-    'Fill in the blanks to complete the code for implementing a simple protocol:',
+    'Fill in the blanks to complete the code for implementing a simple protocol named Greetable and a Person class conforming to it:',
     [
       CodeLine([
         CodeSegment('protocol', editable: true),
@@ -1000,14 +1004,20 @@ List<CodeSnippet> swiftHardSnippets = [
       CodeLine([
         CodeSegment('func', editable: true),
         CodeSegment(' ', editable: false),
-        CodeSegment('makeIncrementer', editable: true),
+        CodeSegment('closure'),
         CodeSegment('(', editable: true),
-        CodeSegment('incrementAmount: Int', editable: true),
+        CodeSegment(
+          'increment: Int',
+        ),
         CodeSegment(')', editable: true),
         CodeSegment(' ', editable: false),
         CodeSegment('->', editable: true),
         CodeSegment(' ', editable: false),
-        CodeSegment('() -> Int', editable: true),
+        CodeSegment('()', editable: true),
+        CodeSegment(' ', editable: false),
+        CodeSegment('->', editable: true),
+        CodeSegment(' ', editable: false),
+        CodeSegment('Int', editable: true),
       ]),
       CodeLine([
         CodeSegment('{', editable: true),
