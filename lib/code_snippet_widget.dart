@@ -43,6 +43,8 @@ class _CodeSnippetWidgetState extends State<CodeSnippetWidget> {
     _player1.setSource(AssetSource('Correct.wav'));
 
     _player2.setSource(AssetSource('Wrong.wav'));
+
+    widget.snippets.shuffle(Random());
     _initializeCurrentSnippet();
     _startTimer();
   }
