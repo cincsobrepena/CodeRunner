@@ -195,7 +195,11 @@ class AppDrawer extends StatelessWidget {
           ListTile(
             title: Text('Logout'),
             onTap: () {
-              // Handle logout logic
+                Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => LoginScreen(),
+                ),
+              );
             },
           ),
           // Add more list tiles for other sections
@@ -252,4 +256,10 @@ class LoginFormProvider extends ChangeNotifier {
     }
     return false;
   }
+
+  void logout() {
+    usernameController.clear();
+    passwordController.clear();
+  }
+
 }
