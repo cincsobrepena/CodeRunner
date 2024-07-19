@@ -65,6 +65,10 @@ flutter:
     - assets/
     - assets/Wrong.wav
     - assets/Correct.wav
+    - assets/design2.png
+    - assets/design1.png
+    - assets/design3.png
+    - assets/logo.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

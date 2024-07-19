@@ -12,18 +12,126 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => CompletedLevelsModel(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => LoginFormProvider()),
+        ChangeNotifierProvider(create: (context) => CompletedLevelsModel()),
+      ],
       child: MaterialApp(
         title: 'CodeRunner',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: HomeScreen(),
+        home: LoginScreen(),
       ),
     );
   }
 }
+
+
+class LoginScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final loginForm = Provider.of<LoginFormProvider>(context);
+
+    return Scaffold(
+      backgroundColor: Color(0xFF3FA2F6),
+      body: Stack(
+        children: [
+          Positioned(
+            top: -250,
+            left: -100,
+            child: Image.asset(
+              'assets/design2.png', // Your design2 asset path
+              height: 500,
+            ),
+          ),
+          Positioned(
+            bottom: 100,
+            left: 50,
+            child: Image.asset(
+              'assets/design1.png', // Your other image asset path
+              height: 300,
+            ),
+          ),
+          Positioned(
+            top: 100,
+            right: -100,
+            child: Image.asset(
+              'assets/design3.png', // Your design3 asset path
+              height: 300,
+            ),
+          ),
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Image.asset(
+                  'assets/logo.png', // Your logo asset path
+                  height: 100,
+                ),
+                SizedBox(height: 10),
+                TextField(
+                  controller: loginForm.usernameController,
+                  decoration: InputDecoration(
+                    labelText: 'Username',
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.person),
+                    filled: true,
+                    fillColor: Colors.white,
+                  ),
+                ),
+                SizedBox(height: 20),
+                TextField(
+                  controller: loginForm.passwordController,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    labelText: 'Password',
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.lock),
+                    filled: true,
+                    fillColor: Colors.white,
+                  ),
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    if (loginForm.login()) {
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (context) => HomeScreen(),
+                        ),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Invalid credentials'),
+                        ),
+                      );
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                    textStyle: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  child: Text('LOGIN'),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -130,5 +238,18 @@ class CourseCard extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class LoginFormProvider extends ChangeNotifier {
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  bool login() {
+    if (usernameController.text == 'admin' &&
+        passwordController.text == 'admin') {
+      return true;
+    }
+    return false;
   }
 }
